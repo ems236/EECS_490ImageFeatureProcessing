@@ -1,6 +1,7 @@
 function outPx=bilinearInterpolate(img, row, col)
 
 [rows, cols] = size(img);
+outPx = 0;
 if col >= 1 && col <= cols && row >= 1 && row <= rows
     lowCol = floor(col);
     highCol = ceil(col);
