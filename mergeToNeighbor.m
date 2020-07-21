@@ -6,12 +6,12 @@ function outImg=mergeToNeighbor(img, fromComponent)
     for row = 1:rows
         for col = 1:cols
             if toComponent < 0 && img(row, col) == fromComponent
-                matchesTop = row ~= 1 && img(row - 1, col) == img(row, col);
-                matchesLeft = col ~= 1 && img(row, col - 1) == img(row, col);
+                topDiff = row ~= 1 && img(row - 1, col) ~= img(row, col);
+                leftDiff = col ~= 1 && img(row, col - 1) ~= img(row, col);
                 
-                if matchesTop
+                if topDiff 
                     toComponent = img(row - 1, col);
-                elseif matchesLeft
+                elseif leftDiff 
                     toComponent = img(row, col - 1);
                 end
             end
