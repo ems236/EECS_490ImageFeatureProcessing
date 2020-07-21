@@ -21,15 +21,29 @@ function outImg=segmentTextures(img, segmentColors)
     [~, clusters] = size(segmentColors);
     classes = kmeans(featureVectors, clusters);
     
-    outImg = zeros(rows, cols);
+    clustered = zeros(rows, cols);
     for row = 1:rows
         for col = 1:cols
-            outImg(row, col) = segmentColors(1, classes((row - 1) * cols + col));
+            clustered(row, col) = segmentColors(1, classes((row - 1) * cols + col));
         end
     end
     
     %do some morphological stuff
-    outImg = uint8(outImg);
+    connectedParts = connectedComponents(clustered);
+    frequencyList = frequencies(connectedParts);
+    keptComponents = largestComponents(clustered, connectedParts, segmentColors, frequencyList);
+    segmented = mergeComponents(connectedParts, frequencyList, keptComponents);
+    for row = 1:rows
+        for col = 1:cols
+            for i = 1:clusters
+                if segmented(row, col) == keptComponents(i)
+                    segmented(row, col) = segmentColors(i);
+                end
+            end
+        end
+    end
+    
+    outImg = uint8(segmented);
     
     
             
