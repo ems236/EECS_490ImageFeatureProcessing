@@ -9,7 +9,6 @@ function classes=classifyLawsSmallTextures(imgArray, clusters)
         end
     end
     
-    disp(featureVecs)
     classes = kmeans(featureVecs, clusters);
     
     
