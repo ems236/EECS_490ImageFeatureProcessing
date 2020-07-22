@@ -19,7 +19,18 @@ function outImg=clusterTextures(img, segmentColors)
     
     %matlab really sucks at anything that's not a matrix
     [~, clusters] = size(segmentColors);
-    classes = kmeans(featureVectors, clusters);
+    minError = 1e100;
+    classes = [];
+    for i=1:5
+        [testClasses, ~, error] = kmeans(featureVectors, clusters);
+        currError = sum(error);
+        if currError < minError
+            classes = testClasses;
+            minError = currError;
+        end
+        disp("cluster error is " + currError);
+    end
+    
     
     clustered = zeros(rows, cols);
     for row = 1:rows
