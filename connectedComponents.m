@@ -15,7 +15,7 @@ function outImg=connectedComponents(img)
                    fromClass = max(topVal, leftVal);
                    toClass = min(topVal, leftVal);
                    for r = 1:row
-                       for c = 1:col
+                       for c = 1:cols
                            if outImg(r, c) == fromClass
                                outImg(r, c) = toClass;
                            end
