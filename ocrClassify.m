@@ -1,29 +1,34 @@
-function classImg=ocrClassify(convexHull, ocrClasses)
+function [classImg, name]=ocrClassify(convexHull, ocrClasses)
     features = ocrFeaturesForHull(convexHull);
     
     %First split on euler number
     if features.eulerNum == -1
         %must be 8
         classImg = ocrClasses.eight;
+        name = "eight";
     elseif features.eulerNum == 0
         %pretty confidently 0, 4, 6, 9
         if features.symmetryY / features.symmetryX > 1.3
             %6 or 9
-            %pretty much exact same features other than left right
-            if features.leftRightRatio > 1
+            %pretty much exact same features other than left right moment stuff
+            if features.centralMomentCol / features.centralMomentRow  > 1.0
+                % must be 9
+                classImg = ocrClasses.nine;
+                name = "nine";
+            else
                 %must be 6
                 classImg = ocrClasses.six;
-            else
-                %must be 9
-                classImg = ocrClasses.nine;
+                name = "six";
             end
         else
-            if 0.9 < features.leftRightRatio && features.leftRightRatio < 1.1
+            if features.convexDeficiency < 1.0
                 %must be 0
                 classImg = ocrClasses.zero;
+                name = "zero";
             else
                 %must be 4
                 classImg = ocrClasses.four;
+                name = "four";
             end
         end
     else
@@ -32,15 +37,18 @@ function classImg=ocrClassify(convexHull, ocrClasses)
         if features.circularity > 0.5
             %must be .
             classImg = ocrClasses.dot;
+            name = "dot";
         elseif features.circularity > 0.15
             %must be 1 or 7
             % serif 1 is surprisingly circular, so is 7
-            if features.spatialMomentRow / features.spatialMomentCol  > 0.7
+            if features.centralMomentCol / features.centralMomentRow  > 1.2
                 % must be 7
                 classImg = ocrClasses.seven;
+                name = "seven";
             else
                 %must be 1
                 classImg = ocrClasses.one;
+                name = "one";
             end
         else
             %2, 3, 5, *
@@ -49,12 +57,14 @@ function classImg=ocrClassify(convexHull, ocrClasses)
                 %square hull low circularity means it's a *
                 % must be *
                 classImg = ocrClasses.star;
+                name = "star";
             else
                 %2, 3, 5
                 if features.symmetryX > features.symmetryY
                     %must be 3
                     %3 is more vertically symmetric than horizontally
                     classImg = ocrClasses.three;
+                    name = "three";
                 else
                     %2, 5
                     % one norm of symmetry
@@ -62,12 +72,13 @@ function classImg=ocrClassify(convexHull, ocrClasses)
                         %5 is less symmetrical than 2
                         %must be 5
                         classImg = ocrClasses.five;
+                        name = "five";
                     else
                         classImg = ocrClasses.two;
+                        name = "two";
                     end
                 end
             end
-            
         end
     end
 end

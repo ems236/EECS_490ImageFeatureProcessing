@@ -9,11 +9,11 @@ function features=ocrFeaturesForHull(img)
     
     features.circularity = 4* pi * features.area / (features.perimeter * features.perimeter);
     
-    [features.spatialMomentRow, features.spatialMomentCol] = firstOrderSpatialMoment(img);
+    [features.centralMomentRow, features.centralMomentCol] = firstOrderCentralMoment(img);
     
-    [features.symmetryX, features.symmetryY, features.leftRightRatio] = symmetryOf(img);
+    [features.symmetryX, features.symmetryY] = symmetryOf(img);
     features.symmetryX = features.symmetryX / features.area;
     features.symmetryY = features.symmetryY / features.area;
     
-    
+    features.convexDeficiency = convexDeficiencyOf(img) / features.area;
 end
