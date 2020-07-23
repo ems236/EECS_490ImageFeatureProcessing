@@ -24,5 +24,5 @@ function bounds=hullBoundsFor(img, componentNum)
             end
         end
     end
-    bounds = [minRow, maxRow, minCol, maxCol];
+    bounds = [max(1, minRow - 1), min(rows, maxRow  + 1), max(1, minCol - 1), min(cols, maxCol + 1)];
 end

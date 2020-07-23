@@ -18,13 +18,13 @@ function [area, perimeter, euler]=graysAlg(img)
     q4Patterns(:,:,1) = [1, 1; 1, 1];
     
     qdPatterns(:,:,1) = [1, 0; 0, 1];
-    qdPatterns(:,:,1) = [0, 1; 1, 0];
+    qdPatterns(:,:,2) = [0, 1; 1, 0];
     
-    q1Count = quadCountOf(img, q1Patterns);
-    q2Count = quadCountOf(img, q2Patterns);
-    q3Count = quadCountOf(img, q3Patterns);
-    q4Count = quadCountOf(img, q4Patterns);
-    qdCount = quadCountOf(img, qdPatterns);
+    q1Count = quadCountof(img, q1Patterns);
+    q2Count = quadCountof(img, q2Patterns);
+    q3Count = quadCountof(img, q3Patterns);
+    q4Count = quadCountof(img, q4Patterns);
+    qdCount = quadCountof(img, qdPatterns);
     
     area = (1/4)*(q1Count + 2 * q2Count + 3 * q3Count + 4 * q4Count + 2 * qdCount);
     perimeter = q1Count + q2Count + q3Count + 2 * qdCount;

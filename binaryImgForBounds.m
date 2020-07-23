@@ -5,9 +5,9 @@ function outBinary=binaryImgForBounds(img, bounds)
     for row = 1:rows
         for col = 1:cols
             if outBinary(row, col) == 255
-                outBinary(row, col) = 255;
-            else
                 outBinary(row, col) = 0;
+            else
+                outBinary(row, col) = 1;
             end
         end
     end
