@@ -84,6 +84,46 @@ mosaic2 = readraw(srcDir + "comb2.raw");
 clustered = clusterTextures(mosaic2, [0, 85, 170, 255]);
 segmented = segmentClusters(clustered, [0, 85, 170, 255]);
 saveImg(segmented, "segmented2", outputDir);
+
+
+% Problem 3: OCR on trained chars and non trained chars
+% Implementation: Connected component segmentation followed by decision tree
+% M-file name: sobelEdgeMap.m
+% Usage: new_image = sobelEdgeMap(img, @sobel3x3Horizontal, @sobal3x3Vertical, threshold (relative to max gradient))
+% Output image: building-sobel-edge.raw, building-sobel-edge_noise-3.raw  building-sobel-edge_noise-7.raw
+training = toGrayScale(readraw_color(srcDir + "training.raw"));
+
+charClasses = buildOcrClasses(training);
+
+disp("Running OCR on test1");
+test1 = toGrayScale(readraw_color(srcDir + "test1.raw"));
+classified = ocrSegmentAndClassify(test1, charClasses);
+[~, toShow] = size(classified);
+for i = 1:toShow
+    niceHull = fromBinary(classified(i).convexHull);
+    saveImg(niceHull, "test1-ocr-hull" + i, outputDir);
+    saveImg(classified(i).classImg, "test1-ocr-result" + i, outputDir);
+end
+
+disp("Running OCR on test2");
+test2 = readraw(srcDir + "test2.raw");
+classified = ocrSegmentAndClassify(test2, charClasses);
+[~, toShow] = size(classified);
+for i = 1:toShow
+    niceHull = fromBinary(classified(i).convexHull);
+    saveImg(niceHull, "test1-ocr-hull" + i, outputDir);
+    saveImg(classified(i).classImg, "test1-ocr-result" + i, outputDir);
+end
+
+disp("Running OCR on cwru");
+cwru = fixedThreshold(toGrayScale(readraw_color(srcDir + "cwru.raw")), 127);
+classified = ocrSegmentAndClassify(cwru, charClasses);
+[~, toShow] = size(classified);
+for i = 1:toShow
+    niceHull = fromBinary(classified(i).convexHull);
+    saveImg(niceHull, "cwru-ocr-hull" + i, outputDir);
+    saveImg(classified(i).classImg, "cwru-ocr-result" + i, outputDir);
+end
 end
 
 function []=saveImg(img, imgName, outDir)
