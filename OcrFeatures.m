@@ -4,8 +4,10 @@ classdef OcrFeatures
         perimeter,
         eulerNum,
         circularity,
-        spatialMoment,
-        symmetry,
+        spatialMomentRow,
+        spatialMomentCol,
+        symmetryX,
+        symmetryY,
         aspectRatio
     end
 end
