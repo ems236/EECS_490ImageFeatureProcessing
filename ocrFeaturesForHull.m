@@ -11,5 +11,9 @@ function features=ocrFeaturesForHull(img)
     
     [features.spatialMomentRow, features.spatialMomentCol] = firstOrderSpatialMoment(img);
     
-    [features.symmetryX, features.symmetryY] = symmetryOf(img);
+    [features.symmetryX, features.symmetryY, features.leftRightRatio] = symmetryOf(img);
+    features.symmetryX = features.symmetryX / features.area;
+    features.symmetryY = features.symmetryY / features.area;
+    
+    
 end

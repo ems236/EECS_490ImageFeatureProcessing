@@ -8,6 +8,7 @@ classdef OcrFeatures
         spatialMomentCol,
         symmetryX,
         symmetryY,
-        aspectRatio
+        aspectRatio,
+        leftRightRatio
     end
 end
