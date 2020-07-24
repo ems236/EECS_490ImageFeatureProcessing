@@ -11,7 +11,7 @@ function [classImg, name]=ocrClassify(convexHull, ocrClasses)
         if features.symmetryY / features.symmetryX > 1.3
             %6 or 9
             %pretty much exact same features other than left right moment stuff
-            if features.centralMomentCol / features.centralMomentRow  > 1.0
+            if features.centralMomentRow  > 0.0
                 % must be 9
                 classImg = ocrClasses.nine;
                 name = "nine";
@@ -41,7 +41,7 @@ function [classImg, name]=ocrClassify(convexHull, ocrClasses)
         elseif features.circularity > 0.15
             %must be 1 or 7
             % serif 1 is surprisingly circular, so is 7
-            if features.centralMomentCol / features.centralMomentRow  > 1.2
+            if features.centralMomentRow > 2
                 % must be 7
                 classImg = ocrClasses.seven;
                 name = "seven";
